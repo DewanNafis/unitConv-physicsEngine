@@ -1,10 +1,18 @@
 # Multi-Level Physics & Unit Conversion System
 
-A comprehensive Python project demonstrating physics calculations, unit conversions, and motion simulations with **153 comprehensive tests** and complete test coverage.
+A comprehensive Python project demonstrating physics calculations, unit conversions, and motion simulations with **210 comprehensive tests** and complete test coverage.
 
 ## 🌟 Overview
 
 This project provides a well-structured library of physics formulas and unit conversions, organized into four levels of complexity. All functions are fully documented, tested, and ready to use in your physics calculations.
+
+### ✨ NEW: Unit-Aware Physics Calculations
+The system now supports **intelligent unit parsing** - enter values with units (e.g., "5 cm", "10 feet", "50 km/h") and the system automatically converts to SI units before calculations!
+
+**Supported Units:**
+- **Distance/Length**: m, cm, inch, feet, yard, km, mile
+- **Mass**: kg, g, lb, oz
+- **Velocity**: m/s, km/h, mph, ft/s
 
 ## Project Structure
 
@@ -12,21 +20,25 @@ This project provides a well-structured library of physics formulas and unit con
 lab6_unit_test/
 ├── converters/
 │   ├── __init__.py
-│   └── basic.py              # Basic unit conversion functions
+│   ├── basic.py              # Basic unit conversion functions
+│   └── units.py              # Unit parsing and conversion (NEW!)
 ├── physics/
 │   ├── __init__.py
 │   ├── derived.py            # Derived physics formulas
-│   └── advanced.py           # Advanced physics calculations
+│   ├── advanced.py           # Advanced physics calculations
+│   └── unit_aware.py         # Unit-aware physics wrappers (NEW!)
 ├── simulation/
 │   ├── __init__.py
 │   └── motion.py             # Motion simulation functions
 ├── tests/
 │   ├── __init__.py
-│   ├── test_basic.py         # Tests for basic conversions
-│   ├── test_derived.py       # Tests for derived physics
-│   ├── test_advanced.py      # Tests for advanced physics
-│   └── test_motion.py        # Tests for motion simulations
-├── main.py                   # Demonstration of all features
+│   ├── test_basic.py         # Tests for basic conversions (24 tests)
+│   ├── test_derived.py       # Tests for derived physics (54 tests)
+│   ├── test_advanced.py      # Tests for advanced physics (60 tests)
+│   ├── test_motion.py        # Tests for motion simulations (29 tests)
+│   └── test_unit_aware.py    # Tests for unit-aware functionality (43 tests)
+├── main.py                   # Interactive menu-based application
+├── demo_unit_aware.py        # Unit-aware demonstration script
 └── README.md                 # This file
 ```
 
@@ -81,9 +93,35 @@ lab6_unit_test/
 
 ## 🚀 Quick Start
 
-### Run the Main Demonstration
+### Run the Interactive Menu System
 ```bash
 python main.py
+```
+
+This launches an interactive menu where you can:
+- Perform basic unit conversions
+- Calculate physics formulas
+- Use **unit-aware calculations** (NEW!)
+- Run automatic demonstrations
+
+### Try Unit-Aware Physics
+```bash
+python demo_unit_aware.py
+```
+
+See examples of intelligent unit parsing and automatic conversion!
+
+### Quick Python Example
+```python
+from physics.unit_aware import calculate_speed, calculate_momentum
+
+# Calculate speed with different units
+speed = calculate_speed("100 cm", 2)           # 0.5 m/s
+speed = calculate_speed("10 feet", 1)          # 3.048 m/s
+
+# Calculate momentum with mixed units
+momentum = calculate_momentum("5 kg", "20 m/s")      # 100.0 kg⋅m/s
+momentum = calculate_momentum("10 lb", "50 km/h")    # 63.00 kg⋅m/s
 ```
 
 This will demonstrate all features across the four levels with example calculations and beautiful formatted output.
@@ -106,6 +144,110 @@ pytest tests/test_motion.py -v     # Test motion simulations
 ### Run Tests with Coverage
 ```bash
 pytest tests/ --cov=. --cov-report=term-missing
+```
+
+---
+
+## 🌍 Unit-Aware Physics API
+
+### Overview
+The `physics.unit_aware` module provides wrapper functions that accept inputs with unit strings and automatically convert to SI units before performing calculations.
+
+### Supported Units
+
+| Quantity | Supported Units |
+|----------|----------------|
+| **Distance/Length** | m, meter, cm, centimeter, inch, in, ft, foot, feet, yard, yd, km, kilometer, mile, mi |
+| **Mass** | kg, kilogram, g, gram, lb, lbs, pound, oz, ounce |
+| **Velocity/Speed** | m/s, mps, km/h, kmh, kph, mph, ft/s, fps |
+
+### Unit Parsing Classes
+
+```python
+from converters.units import Distance, Mass, Velocity
+
+# Parse distance strings
+meters = Distance.parse("5 cm")          # 0.05
+meters = Distance.parse("10 feet")       # 3.048
+meters = Distance.to_meters(100, "cm")   # 1.0
+
+# Parse mass strings
+kg = Mass.parse("5 lb")                  # 2.26796
+kg = Mass.parse("1000 g")                # 1.0
+kg = Mass.to_kg(10, "lb")                # 4.53592
+
+# Parse velocity strings
+mps = Velocity.parse("50 km/h")          # 13.8889
+mps = Velocity.parse("30 mph")           # 13.4112
+mps = Velocity.to_mps(100, "km/h")       # 27.7778
+```
+
+### Unit-Aware Physics Functions
+
+```python
+from physics.unit_aware import (
+    calculate_speed, calculate_momentum, calculate_kinetic_energy,
+    calculate_potential_energy, calculate_force, calculate_work,
+    calculate_centripetal_force, calculate_gravitational_force,
+    simulate_projectile_range
+)
+
+# Speed calculation
+speed = calculate_speed("100 cm", 2)              # distance with unit, time in seconds
+speed = calculate_speed("10 feet", 1)             # Result in m/s
+
+# Momentum calculation
+momentum = calculate_momentum("5 kg", "20 m/s")   # mass with unit, velocity with unit
+momentum = calculate_momentum("10 lb", "50 km/h") # Result in kg⋅m/s
+
+# Kinetic energy
+ke = calculate_kinetic_energy("2 kg", "30 km/h")  # Result in Joules
+
+# Potential energy
+pe = calculate_potential_energy("10 kg", "5 m")
+pe = calculate_potential_energy("20 lb", "30 feet")  # Result in Joules
+
+# Force calculation
+force = calculate_force("5 lb", 10)               # mass with unit, acceleration in m/s²
+                                                  # Result in Newtons
+
+# Work calculation
+work = calculate_work(50, "10 feet")              # force in N, distance with unit
+                                                  # Result in Joules
+
+# Centripetal force
+fc = calculate_centripetal_force("3 kg", "25 km/h", "2 m")
+
+# Gravitational force
+fg = calculate_gravitational_force("1000 kg", "2000 kg", "10 m")
+
+# Projectile range
+range_m = simulate_projectile_range("100 km/h", 45)  # velocity with unit, angle in degrees
+```
+
+### Error Handling
+
+```python
+from converters.units import Distance
+import pytest
+
+# Invalid unit
+try:
+    Distance.parse("5 xyz")
+except ValueError as e:
+    print(e)  # "Unknown unit: xyz. Supported: ..."
+
+# Invalid format
+try:
+    Distance.parse("5")
+except ValueError as e:
+    print(e)  # "Invalid format: '5'. Expected format: 'VALUE UNIT'"
+
+# Invalid number
+try:
+    Distance.parse("abc m")
+except ValueError as e:
+    print(e)  # "Invalid number: 'abc'"
 ```
 
 ---

@@ -1,5 +1,3 @@
-"""Unit tests for advanced physics calculations."""
-
 import pytest
 from physics.advanced import (
     force, work, power, pressure,
@@ -9,9 +7,7 @@ from physics.advanced import (
 )
 
 
-class TestForce:
-    """Test force calculation function."""
-    
+class TestForce:    
     def test_force_basic(self):
         """Test basic force calculation."""
         assert force(10, 5) == 50

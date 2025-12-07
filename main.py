@@ -20,6 +20,8 @@ from physics.advanced import (
     efficiency, electric_power
 )
 from simulation.motion import falling_body, projectile_range
+from physics import unit_aware
+from converters.units import Distance, Mass, Velocity
 import math
 import sys
 
@@ -715,6 +717,160 @@ def auto_demonstration():
     pause()
 
 
+def menu_unit_aware_physics():
+    """Interactive menu for unit-aware physics calculations."""
+    while True:
+        clear_screen()
+        print_section("🌍 Unit-Aware Physics Calculations")
+        print("\n✨ Enter values with units (e.g., '5 cm', '10 feet', '50 km/h')")
+        print("\n1. Speed Calculation")
+        print("2. Momentum Calculation")
+        print("3. Kinetic Energy Calculation")
+        print("4. Potential Energy Calculation")
+        print("5. Force Calculation")
+        print("6. Work Calculation")
+        print("7. Centripetal Force Calculation")
+        print("8. Gravitational Force Calculation")
+        print("9. Falling Body Simulation")
+        print("10. Projectile Range Simulation")
+        print("0. Back to Main Menu")
+        
+        choice = input("\n🎯 Select calculation: ").strip()
+        
+        if choice == "0":
+            break
+        elif choice == "1":
+            print("\n📐 Speed Calculation (Speed = Distance / Time)")
+            print("Supported distance units: m, cm, inch, feet, yard, km, mile")
+            distance = input("Enter distance (e.g., '100 cm', '10 feet'): ").strip()
+            time = get_float_input("Enter time (seconds): ")
+            try:
+                result = unit_aware.calculate_speed(distance, time)
+                print(f"\n✅ Speed: {result:.2f} m/s")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        elif choice == "2":
+            print("\n🚀 Momentum Calculation (p = m × v)")
+            print("Supported mass units: kg, g, lb, oz")
+            print("Supported velocity units: m/s, km/h, mph")
+            mass = input("Enter mass (e.g., '5 kg', '10 lb'): ").strip()
+            velocity = input("Enter velocity (e.g., '20 m/s', '50 km/h'): ").strip()
+            try:
+                result = unit_aware.calculate_momentum(mass, velocity)
+                print(f"\n✅ Momentum: {result:.2f} kg⋅m/s")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        elif choice == "3":
+            print("\n⚡ Kinetic Energy Calculation (KE = ½mv²)")
+            print("Supported mass units: kg, g, lb, oz")
+            print("Supported velocity units: m/s, km/h, mph")
+            mass = input("Enter mass (e.g., '2 kg', '5 lb'): ").strip()
+            velocity = input("Enter velocity (e.g., '10 m/s', '30 km/h'): ").strip()
+            try:
+                result = unit_aware.calculate_kinetic_energy(mass, velocity)
+                print(f"\n✅ Kinetic Energy: {result:.2f} J")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        elif choice == "4":
+            print("\n🏔️  Potential Energy Calculation (PE = mgh)")
+            print("Supported mass units: kg, g, lb, oz")
+            print("Supported height units: m, cm, inch, feet, yard")
+            mass = input("Enter mass (e.g., '5 kg', '10 lb'): ").strip()
+            height = input("Enter height (e.g., '10 m', '30 feet'): ").strip()
+            try:
+                result = unit_aware.calculate_potential_energy(mass, height)
+                print(f"\n✅ Potential Energy: {result:.2f} J")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        elif choice == "5":
+            print("\n💪 Force Calculation (F = ma)")
+            print("Supported mass units: kg, g, lb, oz")
+            mass = input("Enter mass (e.g., '10 kg', '20 lb'): ").strip()
+            acceleration = get_float_input("Enter acceleration (m/s²): ")
+            try:
+                result = unit_aware.calculate_force(mass, acceleration)
+                print(f"\n✅ Force: {result:.2f} N")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        elif choice == "6":
+            print("\n🔧 Work Calculation (W = F × d)")
+            force = get_float_input("Enter force (Newtons): ")
+            print("Supported distance units: m, cm, inch, feet, yard")
+            distance = input("Enter distance (e.g., '5 m', '10 feet'): ").strip()
+            try:
+                result = unit_aware.calculate_work(force, distance)
+                print(f"\n✅ Work: {result:.2f} J")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        elif choice == "7":
+            print("\n🌀 Centripetal Force (F = mv²/r)")
+            print("Supported mass units: kg, g, lb, oz")
+            print("Supported velocity units: m/s, km/h, mph")
+            print("Supported radius units: m, cm, inch, feet")
+            mass = input("Enter mass (e.g., '2 kg', '5 lb'): ").strip()
+            velocity = input("Enter velocity (e.g., '15 m/s', '50 km/h'): ").strip()
+            radius = input("Enter radius (e.g., '3 m', '10 feet'): ").strip()
+            try:
+                result = unit_aware.calculate_centripetal_force(mass, velocity, radius)
+                print(f"\n✅ Centripetal Force: {result:.2f} N")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        elif choice == "8":
+            print("\n🌍 Gravitational Force (F = G × m₁m₂/r²)")
+            print("Supported mass units: kg, g, lb")
+            print("Supported distance units: m, cm, km")
+            mass1 = input("Enter first mass (e.g., '1000 kg'): ").strip()
+            mass2 = input("Enter second mass (e.g., '2000 kg'): ").strip()
+            distance = input("Enter distance (e.g., '10 m', '1000 cm'): ").strip()
+            try:
+                result = unit_aware.calculate_gravitational_force(mass1, mass2, distance)
+                print(f"\n✅ Gravitational Force: {result:.2e} N")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        elif choice == "9":
+            print("\n🪂 Falling Body Simulation")
+            print("Calculate distance fallen under gravity")
+            time = get_float_input("Enter time (seconds): ")
+            try:
+                result = unit_aware.simulate_falling_body(time)
+                print(f"\n✅ Distance fallen: {result:.2f} m")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        elif choice == "10":
+            print("\n🎯 Projectile Range Simulation")
+            print("Supported velocity units: m/s, km/h, mph")
+            velocity = input("Enter initial velocity (e.g., '20 m/s', '70 km/h'): ").strip()
+            angle = get_float_input("Enter launch angle (degrees): ")
+            try:
+                result = unit_aware.simulate_projectile_range(velocity, angle)
+                print(f"\n✅ Range: {result:.2f} m")
+            except ValueError as e:
+                print(f"\n❌ Error: {e}")
+            pause()
+        
+        else:
+            print("\n❌ Invalid choice! Please try again.")
+            pause()
+
+
 def main_menu():
     """Display and handle the main menu."""
     while True:
@@ -729,8 +885,9 @@ def main_menu():
         print("2. ⚡ Level 2: Derived Physics Formulas")
         print("3. 🚀 Level 3: Advanced Physics")
         print("4. 🎯 Level 4: Motion Simulations")
-        print("5. 🎬 Auto Demonstration (with examples)")
-        print("6. 📊 Run All Demonstrations (detailed)")
+        print("5. 🌍 Unit-Aware Physics")
+        print("6. 🎬 Auto Demonstration (with examples)")
+        print("7. 📊 Run All Demonstrations (detailed)")
         print("0. 🚪 Exit")
         
         choice = input("\n🎯 Select an option: ").strip()
@@ -748,8 +905,10 @@ def main_menu():
         elif choice == "4":
             menu_simulations()
         elif choice == "5":
-            auto_demonstration()
+            menu_unit_aware_physics()
         elif choice == "6":
+            auto_demonstration()
+        elif choice == "7":
             run_all_demos()
         else:
             print("\n❌ Invalid choice! Please try again.")

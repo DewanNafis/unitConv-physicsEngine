@@ -5,7 +5,12 @@ from converters.basic import (
     m_to_cm, cm_to_m,
     kg_to_g, g_to_kg,
     c_to_f, f_to_c,
-    s_to_min, min_to_s
+    s_to_min, min_to_s,
+    inch_to_cm, cm_to_inch,
+    feet_to_m, m_to_feet,
+    inch_to_m, m_to_inch,
+    yard_to_m, m_to_yard,
+    mile_to_km, km_to_mile
 )
 
 
@@ -139,3 +144,91 @@ class TestConversionRoundTrips:
         """Test that time conversions are reversible."""
         value = 2.5
         assert s_to_min(min_to_s(value)) == pytest.approx(value)
+
+
+class TestImperialMetricConversions:
+    """Test imperial/metric conversion functions."""
+    
+    def test_inch_to_cm(self):
+        """Test inches to centimeters conversion."""
+        assert inch_to_cm(1) == pytest.approx(2.54)
+        assert inch_to_cm(10) == pytest.approx(25.4)
+        assert inch_to_cm(0) == 0
+    
+    def test_cm_to_inch(self):
+        """Test centimeters to inches conversion."""
+        assert cm_to_inch(2.54) == pytest.approx(1)
+        assert cm_to_inch(25.4) == pytest.approx(10)
+        assert cm_to_inch(0) == 0
+    
+    def test_feet_to_m(self):
+        """Test feet to meters conversion."""
+        assert feet_to_m(1) == pytest.approx(0.3048)
+        assert feet_to_m(10) == pytest.approx(3.048)
+        assert feet_to_m(0) == 0
+    
+    def test_m_to_feet(self):
+        """Test meters to feet conversion."""
+        assert m_to_feet(0.3048) == pytest.approx(1)
+        assert m_to_feet(3.048) == pytest.approx(10)
+        assert m_to_feet(0) == 0
+    
+    def test_inch_to_m(self):
+        """Test inches to meters conversion."""
+        assert inch_to_m(1) == pytest.approx(0.0254)
+        assert inch_to_m(100) == pytest.approx(2.54)
+        assert inch_to_m(0) == 0
+    
+    def test_m_to_inch(self):
+        """Test meters to inches conversion."""
+        assert m_to_inch(0.0254) == pytest.approx(1)
+        assert m_to_inch(2.54) == pytest.approx(100)
+        assert m_to_inch(0) == 0
+    
+    def test_yard_to_m(self):
+        """Test yards to meters conversion."""
+        assert yard_to_m(1) == pytest.approx(0.9144)
+        assert yard_to_m(10) == pytest.approx(9.144)
+        assert yard_to_m(0) == 0
+    
+    def test_m_to_yard(self):
+        """Test meters to yards conversion."""
+        assert m_to_yard(0.9144) == pytest.approx(1)
+        assert m_to_yard(9.144) == pytest.approx(10)
+        assert m_to_yard(0) == 0
+    
+    def test_mile_to_km(self):
+        """Test miles to kilometers conversion."""
+        assert mile_to_km(1) == pytest.approx(1.60934)
+        assert mile_to_km(5) == pytest.approx(8.0467)
+        assert mile_to_km(0) == 0
+    
+    def test_km_to_mile(self):
+        """Test kilometers to miles conversion."""
+        assert km_to_mile(1.60934) == pytest.approx(1)
+        assert km_to_mile(8.0467) == pytest.approx(5)
+        assert km_to_mile(0) == 0
+
+
+class TestImperialMetricRoundTrips:
+    """Test that imperial/metric conversions are reversible."""
+    
+    def test_inch_cm_round_trip(self):
+        """Test inch to cm round trip."""
+        value = 12.5
+        assert cm_to_inch(inch_to_cm(value)) == pytest.approx(value)
+    
+    def test_feet_m_round_trip(self):
+        """Test feet to meters round trip."""
+        value = 6.5
+        assert m_to_feet(feet_to_m(value)) == pytest.approx(value)
+    
+    def test_yard_m_round_trip(self):
+        """Test yard to meters round trip."""
+        value = 100
+        assert m_to_yard(yard_to_m(value)) == pytest.approx(value)
+    
+    def test_mile_km_round_trip(self):
+        """Test mile to km round trip."""
+        value = 26.2
+        assert km_to_mile(mile_to_km(value)) == pytest.approx(value)
